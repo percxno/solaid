@@ -38,7 +38,7 @@ export const Navbar = () => {
             <Link
               key={item.label}
               href={item.href}
-              className="text-white/50 hover:text-primary hover:underline transition-colors duration-200 px-5"
+              className="text-white/50 hover:text-primary hover:underline underline-offset-2 transition-colors duration-200 px-5"
             >
               {item.label}
             </Link>

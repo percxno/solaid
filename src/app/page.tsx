@@ -24,7 +24,7 @@ export default function Home() {
         <Ripple className="absolute -top-[150px]" />
         <button
           className="cursor-pointer flex items-center px-10 h-[32px] mt-[210px] font-light
-      text-white/80 hover:text-primary hover:underline transition-colors duration-200
+      text-white/80 hover:text-primary hover:underline underline-offset-4 transition-colors duration-200
       "
         >
           <TextShimmer className="hover:text-primary" duration={1}>
