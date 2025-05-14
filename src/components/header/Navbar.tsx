@@ -2,7 +2,15 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { NavbarCta } from './NavbarCta';
+
 export const Navbar = () => {
+  const navItems = [
+    { label: 'HOME', href: '/#home' },
+    { label: 'DONATE', href: '/#donate' },
+    { label: 'FUNDRAISE', href: '/#fundraise' },
+  ];
+
   return (
     <section className="h-20 flex items-center border-l border-r w-full font-light">
       <div className="flex items-center px-5 border-r h-full cursor-pointer">
@@ -15,6 +23,20 @@ export const Navbar = () => {
           />
         </Link>
       </div>
+      <section className="flex h-full w-full justify-between">
+        <nav className="flex flex-1 items-center gap-5 px-4 text-sm border-r h-full">
+          {navItems.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              className="text-white/50 hover:text-primary transition-colors duration-200 px-5"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+        <NavbarCta />
+      </section>
     </section>
   );
 };
