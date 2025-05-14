@@ -1,7 +1,5 @@
-import { MoveUpRightIcon } from 'lucide-react';
-
-import { FlickeringGrid } from '@/components/magicui/flickering-grid';
 import { Ripple } from '@/components/magicui/ripple';
+import { TextShimmer } from '../../components/motion-primitives/text-shimmer';
 
 export default function Home() {
   return (
@@ -29,7 +27,9 @@ export default function Home() {
       text-white/80 hover:text-primary hover:underline transition-colors duration-200
       "
         >
-          START FUNDRAISING
+          <TextShimmer className="hover:text-primary " duration={1}>
+            START FUNDRAISING
+          </TextShimmer>
         </button>
       </div>
     </main>
