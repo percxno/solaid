@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { NavbarCta } from './NavbarCta';
+import { FlickeringGrid } from '@/components/magicui/flickering-grid';
 
 export const Navbar = () => {
   const navItems = [
@@ -13,7 +14,7 @@ export const Navbar = () => {
 
   return (
     <section className="h-20 flex items-center border-l border-r w-full font-light">
-      <div className="flex items-center px-5 border-r h-full cursor-pointer">
+      <div className="relative flex items-center px-5 border-r h-full cursor-pointer">
         <Link href="/">
           <Image
             src="assets/logos/full-logo.svg"
@@ -22,6 +23,14 @@ export const Navbar = () => {
             height={32}
           />
         </Link>
+        <FlickeringGrid
+          className="absolute top-0 left-0 w-full h-full opacity-0 hover:opacity-75 transition-opacity duration-200"
+          squareSize={2}
+          gridGap={2}
+          color="#6B7280"
+          maxOpacity={0.3}
+          flickerChance={0.5}
+        />
       </div>
       <section className="flex h-full w-full justify-between">
         <nav className="flex flex-1 items-center gap-5 px-4 text-sm border-r h-full">
