@@ -23,12 +23,12 @@ export default function Home() {
       <div className="relative h-[600px] w-[800px] flex justify-center">
         <Ripple className="absolute -top-[150px]" />
         <button
-          className="cursor-pointer flex items-center px-10 uppercase h-[32px] mt-[210px] font-light
+          className="cursor-pointer flex items-center px-10 h-[32px] mt-[210px] font-light
       text-white/80 hover:text-primary hover:underline transition-colors duration-200
       "
         >
-          <TextShimmer className="hover:text-primary " duration={1}>
-            START FUNDRAISING
+          <TextShimmer className="hover:text-primary" duration={1}>
+            Start Fundraising
           </TextShimmer>
         </button>
       </div>
