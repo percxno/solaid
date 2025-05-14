@@ -22,10 +22,10 @@ export default function Home() {
           medical bills, community needs, and more.
         </p>
       </section>
-      <div className="relative h-[500px] w-[700px] flex justify-center">
-        <Ripple className="absolute -top-[250px]" />
+      <div className="relative h-[600px] w-[700px] flex justify-center">
+        <Ripple className="absolute -top-[150px]" />
         <button
-          className="cursor-pointer flex items-center px-10 uppercase h-[32px] mt-[110px] font-light
+          className="cursor-pointer flex items-center px-10 uppercase h-[32px] mt-[210px] font-light
       text-white/80 hover:text-primary hover:underline transition-colors duration-200
       "
         >
