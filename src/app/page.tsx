@@ -20,7 +20,7 @@ export default function Home() {
           medical bills, community needs, and more.
         </p>
       </section>
-      <div className="relative h-[600px] w-[700px] flex justify-center">
+      <div className="relative h-[600px] w-[800px] flex justify-center">
         <Ripple className="absolute -top-[150px]" />
         <button
           className="cursor-pointer flex items-center px-10 uppercase h-[32px] mt-[210px] font-light
