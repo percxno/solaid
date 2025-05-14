@@ -8,7 +8,7 @@ export function NavbarCta() {
     <section className="w-fit flex items-center">
       <button
         className="relative border-r h-full px-10 cursor-pointer flex items-center
-        text-white/50 hover:text-primary transition-colors duration-200
+        text-white/80 hover:text-primary transition-colors duration-200
       "
       >
         Connect
@@ -23,7 +23,7 @@ export function NavbarCta() {
       </button>
       <button
         className="relative h-full cursor-pointer flex items-center px-10
-      text-white/50 hover:text-primary transition-colors duration-200
+      text-white/80 hover:text-primary transition-colors duration-200
       "
       >
         Start a Fundraiser
