@@ -122,6 +122,10 @@
 }
 
 @layer components {
+  .container {
+    @apply mx-auto w-full px-4;
+  }
+
   .main-container {
     @apply flex flex-wrap max-w-full w-[1680px];
   }

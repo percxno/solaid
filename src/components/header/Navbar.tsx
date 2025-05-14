@@ -14,7 +14,7 @@ export const Navbar = () => {
 
   return (
     <section className="h-20 flex items-center border-l border-r w-full font-light">
-      <div className="relative flex items-center px-5 border-r h-full cursor-pointer">
+      <div className="relative flex items-center px-10 border-r h-full cursor-pointer">
         <Link href="/">
           <Image
             src="assets/logos/full-logo.svg"
@@ -33,7 +33,7 @@ export const Navbar = () => {
         />
       </div>
       <section className="flex h-full w-full justify-between">
-        <nav className="flex flex-1 items-center gap-5 px-4 text-sm border-r h-full">
+        <nav className="flex flex-1 items-center gap-5 px-10 text-sm border-r h-full">
           {navItems.map((item) => (
             <Link
               key={item.label}

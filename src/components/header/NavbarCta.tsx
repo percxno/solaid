@@ -7,7 +7,7 @@ export function NavbarCta() {
   return (
     <section className="w-fit flex items-center">
       <button
-        className="relative border-r h-full px-5 cursor-pointer flex items-center
+        className="relative border-r h-full px-10 cursor-pointer flex items-center
         text-white/50 hover:text-primary transition-colors duration-200
       "
       >
@@ -22,7 +22,7 @@ export function NavbarCta() {
         />
       </button>
       <button
-        className="relative h-full cursor-pointer flex items-center px-5
+        className="relative h-full cursor-pointer flex items-center px-10
       text-white/50 hover:text-primary transition-colors duration-200
       "
       >
