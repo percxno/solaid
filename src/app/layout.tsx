@@ -36,7 +36,6 @@ export default function RootLayout({
       >
         <section className="font-[family-name:var(--font-manrope)] min-h-screen w-full flex flex-col items-center">
           <Header />
-          <div className="w-full h-[1px] bg-muted" />
           {children}
           <Footer />
         </section>
