@@ -18,7 +18,7 @@ import {
   FeatherIcon,
   HandshakeIcon,
   VolleyballIcon,
-  UserPlusIcon,
+  CakeSliceIcon,
 } from 'lucide-react';
 
 const categories = [
@@ -36,7 +36,7 @@ const categories = [
   { name: 'Memorial', icon: FeatherIcon },
   { name: 'Nonprofit', icon: HandshakeIcon },
   { name: 'Sports', icon: VolleyballIcon },
-  { name: 'Volunteer', icon: UserPlusIcon },
+  { name: 'Wishes', icon: CakeSliceIcon },
 ];
 
 export default function Campaigns() {
