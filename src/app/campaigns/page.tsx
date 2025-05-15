@@ -1,24 +1,42 @@
-import React from 'react';
+'use client';
 
+import React from 'react';
 import { cn } from '@/lib/utils';
 import { FlickeringGrid } from '@/components/magicui/flickering-grid';
+import {
+  PawPrintIcon,
+  BriefcaseIcon,
+  UsersIcon,
+  PaintbrushIcon,
+  BookOpenIcon,
+  AlertTriangleIcon,
+  LeafIcon,
+  CalendarIcon,
+  StarIcon,
+  HomeIcon,
+  AmbulanceIcon,
+  FeatherIcon,
+  HandshakeIcon,
+  VolleyballIcon,
+  UserPlusIcon,
+} from 'lucide-react';
 
 const categories = [
-  'Animal',
-  'Business',
-  'Community',
-  'Creative',
-  'Education',
-  'Emergency',
-  'Environment',
-  'Event',
-  'Faith',
-  'Family',
-  'Medical',
-  'Memorial',
-  'Nonprofit',
-  'Sports',
-  'Volunteer',
+  { name: 'Animal', icon: PawPrintIcon },
+  { name: 'Business', icon: BriefcaseIcon },
+  { name: 'Community', icon: UsersIcon },
+  { name: 'Creative', icon: PaintbrushIcon },
+  { name: 'Education', icon: BookOpenIcon },
+  { name: 'Emergency', icon: AlertTriangleIcon },
+  { name: 'Environment', icon: LeafIcon },
+  { name: 'Event', icon: CalendarIcon },
+  { name: 'Faith', icon: StarIcon },
+  { name: 'Family', icon: HomeIcon },
+  { name: 'Medical', icon: AmbulanceIcon },
+  { name: 'Memorial', icon: FeatherIcon },
+  { name: 'Nonprofit', icon: HandshakeIcon },
+  { name: 'Sports', icon: VolleyballIcon },
+  { name: 'Volunteer', icon: UserPlusIcon },
 ];
 
 export default function Campaigns() {
@@ -35,13 +53,13 @@ export default function Campaigns() {
         </h4>
       </section>
 
-      <section className="w-4/5 my-40 ">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 roundded-lg divide-x divide-y">
-          {categories.map((category, index) => (
+      <section className="w-4/5 my-40">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 rounded-lg divide-x divide-y">
+          {categories.map(({ name, icon: Icon }, index) => (
             <div
-              key={category}
+              key={name}
               className={cn(
-                'aspect-square cursor-pointer relative p-6 text-white/50 hover:text-primary',
+                'aspect-square cursor-pointer relative flex flex-col justify-between p-6 text-white/50 hover:text-primary transition-colors',
                 index === 0 && 'border-l',
                 index < 5 && 'border-t',
                 index === 5 && 'border-l',
@@ -49,7 +67,8 @@ export default function Campaigns() {
                 index === 14 && 'border-r border-b'
               )}
             >
-              <span className="text-lg font-light">{category}</span>
+              <Icon size={24} />
+              <span className="text-lg font-light">{name}</span>
               <FlickeringGrid
                 className="absolute top-0 left-0 w-full h-full opacity-0 hover:opacity-75 transition-opacity duration-200"
                 squareSize={2}
