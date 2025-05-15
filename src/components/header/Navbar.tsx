@@ -13,7 +13,7 @@ export const Navbar = () => {
 
   const navItems = [
     { label: 'HOME', href: '/' },
-    { label: 'DONATE', href: '/donate' },
+    { label: 'CAMPAIGNS', href: '/campaigns' },
     { label: 'FUNDRAISE', href: '/fundraise' },
   ];
 
