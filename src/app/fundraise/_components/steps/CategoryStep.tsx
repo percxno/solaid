@@ -14,7 +14,7 @@ export function CategoryStep() {
         selected === name ? (
           <AnimatedSubscribeButton
             className={`bg-transparent p-0 h-12
-          border border-white/50 rounded-[6px] cursor-pointer
+          border rounded-[6px] cursor-pointer
            text-white/50 hover:text-primary transition-colors duration-200
           `}
             key={name}
@@ -50,7 +50,7 @@ export function CategoryStep() {
         ) : (
           <AnimatedSubscribeButton
             className={`bg-transparent p-0 h-12
-          border border-white/50 rounded-[6px] cursor-pointer
+          border rounded-[6px] cursor-pointer
            text-white/50 hover:text-primary transition-colors duration-200
           `}
             key={name}

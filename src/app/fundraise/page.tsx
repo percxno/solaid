@@ -46,7 +46,7 @@ export default function Fundraise() {
           title: () => <TitleStep />,
         })}
 
-        <div className="flex mt-16 justify-end gap-5">
+        <div className="flex mt-16 pt-10 justify-end gap-5 border-t">
           {!stepper.isFirst && (
             <Button
               variant="outline"
