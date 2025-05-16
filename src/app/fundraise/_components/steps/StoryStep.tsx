@@ -10,7 +10,7 @@ export function StoryStep() {
         value={story}
         onChange={(e) => setStory(e.target.value)}
         placeholder="Tell your story here..."
-        className="min-h-[400px] text-base"
+        className="min-h-[400px] text-base p-5"
       />
     </div>
   );

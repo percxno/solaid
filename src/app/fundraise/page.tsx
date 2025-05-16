@@ -33,7 +33,7 @@ export default function Fundraise() {
     <SessionProvider>
       <main className="main-container container items-center flex-col">
         <section className="flex flex-col mt-32 gap-10 justify-between bg-transparent w-full">
-          <p className="font-light text-white/50 text-xs">/ FUNDRAISE</p>
+          <p className="font-light text-white/50 text-xs">{`/ FUNDRAISE - ${stepper.current.id.toUpperCase()}`}</p>
           <h1 className="text-7xl w-full">
             {getStepTitle(stepper.current.id)}
           </h1>
@@ -42,7 +42,7 @@ export default function Fundraise() {
           </h4>
         </section>
 
-        <section className="w-full max-w-4xl mx-auto mt-16 space-y-10">
+        <section className="w-full mt-16">
           {stepper.switch({
             category: () => <CategoryStep />,
             beneficiary: () => <BeneficiaryStep />,
@@ -53,18 +53,20 @@ export default function Fundraise() {
             verify: () => <VerifyStep />,
           })}
 
-          <div className="flex justify-between pt-8">
-            <Button
-              variant="outline"
-              onClick={stepper.prev}
-              disabled={stepper.isFirst}
-              className="cursor-pointer"
-            >
-              Back
-            </Button>
+          <div className="flex mt-16 pt-10 justify-end gap-5 border-t">
+            {!stepper.isFirst && (
+              <Button
+                variant="outline"
+                onClick={stepper.prev}
+                disabled={stepper.isFirst}
+                className="text-base cursor-pointer rounded-[6px] h-12 px-10"
+              >
+                Back
+              </Button>
+            )}
             <Button
               onClick={stepper.isLast ? stepper.reset : stepper.next}
-              className="cursor-pointer"
+              className="text-base cursor-pointer rounded-[6px] h-12 px-10"
             >
               {stepper.isLast ? 'Finish' : 'Continue'}
             </Button>
