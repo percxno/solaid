@@ -19,7 +19,7 @@ export function generateStaticParams() {
   }));
 }
 
-export default async function CampaignCategoryPage({
+export default async function CampaignCategory({
   params,
 }: {
   params: { category: string };
@@ -84,14 +84,16 @@ export default async function CampaignCategoryPage({
                     ${c.amount.toLocaleString()}
                   </p>
                 </div>
-                <Button
-                  className={cn(
-                    'bg-[#1A1A1A] text-white group-hover:bg-white group-hover:text-black transition-colors duration-200',
-                    'text-base mt-5 rounded-[6px] h-12 px-10 w-full cursor-pointer'
-                  )}
-                >
-                  Contribute
-                </Button>
+                <Link href={`/donate/${c.id}`}>
+                  <Button
+                    className={cn(
+                      'bg-[#1A1A1A] text-white group-hover:bg-white group-hover:text-black transition-colors duration-200',
+                      'text-base mt-5 rounded-[6px] h-12 px-10 w-full cursor-pointer'
+                    )}
+                  >
+                    Donate
+                  </Button>
+                </Link>
               </div>
             ))}
           </div>
