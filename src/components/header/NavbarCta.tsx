@@ -1,5 +1,6 @@
 'use client';
 import React, { useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { MoveUpRightIcon } from 'lucide-react';
 
@@ -9,6 +10,7 @@ import { truncate } from '@/lib/utils';
 import { TextScramble } from '../../../components/motion-primitives/text-scramble';
 
 export function NavbarCta() {
+  const router = useRouter();
   const { publicKey, select, disconnect, wallets, connected } = useWallet();
 
   const rawKey = useMemo(() => publicKey?.toBase58() ?? '', [publicKey]);
@@ -45,6 +47,7 @@ export function NavbarCta() {
         className="relative h-full cursor-pointer flex items-center px-10
       text-white/80 hover:text-primary transition-colors duration-200
       "
+        onClick={() => router.push('/fundraise')}
       >
         Start a Fundraiser
         <MoveUpRightIcon className="ml-2 font-extralight" size={16} />

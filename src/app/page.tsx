@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Ripple } from '@/components/magicui/ripple';
 import { TextShimmer } from '../../components/motion-primitives/text-shimmer';
 
@@ -22,15 +23,17 @@ export default function Home() {
       </section>
       <div className="relative h-[600px] w-[800px] flex justify-center">
         <Ripple className="absolute -top-[150px]" />
-        <button
-          className="cursor-pointer flex items-center px-10 h-[32px] mt-[210px] font-light
+        <Link href={'/fundraise'}>
+          <button
+            className="cursor-pointer flex items-center px-10 h-[32px] mt-[210px] font-light
       text-white/80 hover:text-primary hover:underline underline-offset-4 transition-colors duration-200
       "
-        >
-          <TextShimmer className="hover:text-primary" duration={1}>
-            Start Fundraising
-          </TextShimmer>
-        </button>
+          >
+            <TextShimmer className="hover:text-primary" duration={1}>
+              Start Fundraising
+            </TextShimmer>
+          </button>
+        </Link>
       </div>
     </main>
   );
