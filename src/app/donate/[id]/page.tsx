@@ -59,7 +59,7 @@ export default function DonatePage({ params }: { params: Params }) {
           />
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full">
           <p className="text-sm text-white/50 mb-6">{campaign.story}</p>
           <div className="mb-6 flex flex-col">
             <span className="text-lg font-semibold">1,005 SOL raised</span>
