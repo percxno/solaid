@@ -62,29 +62,28 @@ export default async function CampaignCategory({
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-3">
             {campaigns.map((c) => (
-              <div
-                key={c.id}
-                className={cn(
-                  'group relative bg-transparent rounded-lg shadow-md overflow-hidden border',
-                  'cursor-pointer hover:border-white transition-all duration-200 p-6'
-                )}
-              >
-                <Image
-                  src={c.imageUrl}
-                  alt={c.title}
-                  width={500}
-                  height={500}
-                  className="w-full h-48 object-cover rounded-[6px]"
-                />
-                <div className="mt-4 justify-between">
-                  <h2 className="text-lg font-semibold mb-2 h-14 line-clamp-2">
-                    {c.title}
-                  </h2>
-                  <p className="text-white/50 text-sm line-clamp-3 mt-10">
-                    ${c.amount.toLocaleString()}
-                  </p>
-                </div>
-                <Link href={`/donate/${c.id}`}>
+              <Link href={`/donate/${c.id}`} key={c.id}>
+                <div
+                  className={cn(
+                    'group relative bg-transparent rounded-lg shadow-md overflow-hidden border',
+                    'cursor-pointer hover:border-white transition-all duration-200 p-6'
+                  )}
+                >
+                  <Image
+                    src={c.imageUrl}
+                    alt={c.title}
+                    width={500}
+                    height={500}
+                    className="w-full h-48 object-cover rounded-[6px]"
+                  />
+                  <div className="mt-4 justify-between">
+                    <h2 className="text-lg font-semibold mb-2 h-14 line-clamp-2">
+                      {c.title}
+                    </h2>
+                    <p className="text-white/50 text-sm line-clamp-3 mt-10">
+                      ${c.amount.toLocaleString()}
+                    </p>
+                  </div>
                   <Button
                     className={cn(
                       'bg-[#1A1A1A] text-white group-hover:bg-white group-hover:text-black transition-colors duration-200',
@@ -93,8 +92,8 @@ export default async function CampaignCategory({
                   >
                     Donate
                   </Button>
-                </Link>
-              </div>
+                </div>
+              </Link>
             ))}
           </div>
         )}
