@@ -29,14 +29,14 @@ export default function Fundraise() {
   return (
     <main className="main-container container items-center flex-col">
       <section className="flex flex-col mt-32 gap-10 justify-between bg-transparent w-full">
-        <p className="font-light text-white/50 text-xs">/ FUNDRAISE</p>
+        <p className="font-light text-white/50 text-xs">{`/ FUNDRAISE - ${stepper.current.id.toUpperCase()}`}</p>
         <h1 className="text-7xl w-full">{getStepTitle(stepper.current.id)}</h1>
         <h4 className="text-3xl mt-5 w-2/3 font-light text-white/80">
           {getStepSubtitle(stepper.current.id)}
         </h4>
       </section>
 
-      <section className="w-full max-w-4xl mx-auto mt-16 space-y-10">
+      <section className="w-full mt-16">
         {stepper.switch({
           category: () => <CategoryStep />,
           beneficiary: () => <BeneficiaryStep />,
@@ -46,7 +46,7 @@ export default function Fundraise() {
           title: () => <TitleStep />,
         })}
 
-        <div className="flex justify-end gap-5">
+        <div className="flex mt-16 justify-end gap-5">
           {!stepper.isFirst && (
             <Button
               variant="outline"
