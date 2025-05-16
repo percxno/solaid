@@ -20,19 +20,15 @@ export default function Campaigns() {
         </h4>
       </section>
 
-      <section className="w-4/5 my-40">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 rounded-lg divide-x divide-y">
+      <section className="w-full my-40">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 rounded-lg">
           {categories.map(({ name, icon: Icon }, index) => (
             <Link
               key={name}
               href={`/campaigns/${name.toLowerCase()}`}
               className={cn(
-                'aspect-square cursor-pointer relative flex flex-col justify-between p-6 text-white/50 hover:text-primary transition-colors',
-                index === 0 && 'border-l',
-                index < 5 && 'border-t',
-                index === 5 && 'border-l',
-                index === 10 && 'border-l border-b',
-                index === 14 && 'border-r border-b'
+                'aspect-square cursor-pointer border relative flex flex-col justify-between p-6 text-white/50 hover:text-primary transition-colors',
+                'hover:border hover:border-white'
               )}
             >
               <Icon size={24} />

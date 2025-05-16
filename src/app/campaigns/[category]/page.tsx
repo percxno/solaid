@@ -1,13 +1,15 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
-import { FlickeringGrid } from '@/components/magicui/flickering-grid';
 import {
   categories,
   categorieHeroContent,
   categoryIconMap,
 } from '@/lib/categories';
-import { mockCampaigns, type Campaign } from '@/lib/mock';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { mockCampaigns } from '@/lib/mock';
 
 export const revalidate = 60;
 
@@ -54,39 +56,42 @@ export default async function CampaignCategoryPage({
 
       <section className="w-full my-40">
         {campaigns.length === 0 ? (
-          <p className="text-white/50">No campaigns found for {displayName}.</p>
+          <p className="text-white/50 font-light">
+            No campaigns found for {displayName}.
+          </p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3">
             {campaigns.map((c) => (
               <div
                 key={c.id}
-                className="relative bg-white rounded-lg shadow-md overflow-hidden"
+                className={cn(
+                  'group relative bg-transparent rounded-lg shadow-md overflow-hidden border',
+                  'cursor-pointer hover:border-white transition-all duration-200 p-6'
+                )}
               >
-                <img
+                <Image
                   src={c.imageUrl}
                   alt={c.title}
-                  className="w-full h-48 object-cover"
+                  width={500}
+                  height={500}
+                  className="w-full h-48 object-cover rounded-[6px]"
                 />
-                <div className="p-4">
-                  <h2 className="text-2xl font-semibold mb-2">{c.title}</h2>
-                  <p className="text-gray-600 mb-1">
-                    <strong>Beneficiary:</strong> {c.beneficiary}
-                  </p>
-                  <p className="text-gray-600 mb-2">
-                    <strong>Goal:</strong> ${c.amount.toLocaleString()}
-                  </p>
-                  <p className="text-gray-700 text-sm line-clamp-3">
-                    {c.story}
+                <div className="mt-4 justify-between">
+                  <h2 className="text-lg font-semibold mb-2 h-14 line-clamp-2">
+                    {c.title}
+                  </h2>
+                  <p className="text-white/50 text-sm line-clamp-3 mt-10">
+                    ${c.amount.toLocaleString()}
                   </p>
                 </div>
-                <FlickeringGrid
-                  className="absolute top-0 left-0 w-full h-full opacity-0 hover:opacity-75 transition-opacity duration-200"
-                  squareSize={2}
-                  gridGap={2}
-                  color="#6B7280"
-                  maxOpacity={0.3}
-                  flickerChance={0.5}
-                />
+                <Button
+                  className={cn(
+                    'bg-[#1A1A1A] text-white group-hover:bg-white group-hover:text-black transition-colors duration-200',
+                    'text-base mt-5 rounded-[6px] h-12 px-10 w-full cursor-pointer'
+                  )}
+                >
+                  Contribute
+                </Button>
               </div>
             ))}
           </div>
