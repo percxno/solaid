@@ -3,8 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { mockCampaigns } from '@/lib/mock';
-import DonateForm from './_components/DonateForm';
 import { categoryIconMap } from '@/lib/categories';
+import DonateForm from './_components/DonateForm';
+import { DonationStats } from './_components/DonationStats';
 
 interface Params {
   id: string;
@@ -68,6 +69,7 @@ export default function DonatePage({ params }: { params: Params }) {
           </div>
 
           <DonateForm campaignId={Number(campaign.id)} />
+          <DonationStats />
         </div>
       </div>
     </main>
