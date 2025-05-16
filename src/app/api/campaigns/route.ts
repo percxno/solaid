@@ -12,12 +12,13 @@ export async function POST(req: NextRequest) {
       category,
       mediaUrl,
       email,
+      campaignOwnerName,
       walletAddress,
     } = body;
 
     if (
       !title || !story || !goalAmount || !category ||
-      !email || !walletAddress
+      !email || !walletAddress || !campaignOwnerName
     ) {
       return NextResponse.json(
         { error: 'Missing required fields' },
@@ -34,6 +35,7 @@ export async function POST(req: NextRequest) {
         mediaUrl,
         email,
         walletAddress,
+        campaignOwnerName,
       },
     });
 

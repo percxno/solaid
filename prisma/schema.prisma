@@ -14,17 +14,18 @@ datasource db {
 }
 
 model Campaign {
-  id            String   @id @default(cuid())
-  title         String
-  story         String
-  goalAmount    Decimal
-  category      String
-  mediaUrl      String?
-  email         String
-  walletAddress String
-  verified      Boolean  @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id                String   @id @default(cuid())
+  title             String
+  story             String
+  goalAmount        Decimal
+  category          String
+  mediaUrl          String?
+  campaignOwnerName String
+  email             String
+  walletAddress     String
+  verified          Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   donations Donation[]
 }
