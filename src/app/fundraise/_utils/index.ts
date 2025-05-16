@@ -12,6 +12,8 @@ export function getStepTitle(id: string) {
       return 'Title';
     case 'media':
       return 'Add media';
+    case 'verify':
+      return 'Verify your identity';
     default:
       return '';
   }
@@ -31,6 +33,8 @@ export function getStepSubtitle(id: string) {
       return 'Give your fundraiser a title';
     case 'media':
       return 'Cover media helps tell your story. If you find a better photo later, you can always change it';
+    case 'verify':
+      return 'We need to verify your identity before you can launch your fundraiser.';
     default:
       return '';
   }
