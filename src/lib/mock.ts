@@ -91,7 +91,7 @@ export const mockCampaigns: Campaign[] = [
     imageUrl: '/images/elephants.png',
   },
   {
-    id: '3',
+    id: '9',
     category: 'education',
     beneficiary: 'Bright Future Schools',
     amount: 12000,
