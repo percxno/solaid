@@ -3,11 +3,17 @@ import { prisma } from '@/utils/client';
 
 export async function GET(
   req: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
+
 ) {
   try {
-    const { params } = context;
-    const { id } = await params;
+    const { id } = await params
+
+    console.log('[GET_CAMPAIGN_BY_ID]', id);
+    
+    if (!id) {
+      return NextResponse.json({ error: 'Campaign ID is required' }, { status: 400 });
+    }
 
     const campaign = await prisma.campaign.findUnique({
       where: { id },
