@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { FlickeringGrid } from '@/components/magicui/flickering-grid';
 import { categories } from '@/lib/categories';
@@ -22,8 +23,9 @@ export default function Campaigns() {
       <section className="w-4/5 my-40">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 rounded-lg divide-x divide-y">
           {categories.map(({ name, icon: Icon }, index) => (
-            <div
+            <Link
               key={name}
+              href={`/campaigns/${name.toLowerCase()}`}
               className={cn(
                 'aspect-square cursor-pointer relative flex flex-col justify-between p-6 text-white/50 hover:text-primary transition-colors',
                 index === 0 && 'border-l',
@@ -43,7 +45,7 @@ export default function Campaigns() {
                 maxOpacity={0.3}
                 flickerChance={0.5}
               />
-            </div>
+            </Link>
           ))}
         </div>
       </section>
