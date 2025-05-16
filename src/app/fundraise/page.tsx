@@ -46,18 +46,20 @@ export default function Fundraise() {
           title: () => <TitleStep />,
         })}
 
-        <div className="flex justify-between pt-8">
-          <Button
-            variant="outline"
-            onClick={stepper.prev}
-            disabled={stepper.isFirst}
-            className="cursor-pointer"
-          >
-            Back
-          </Button>
+        <div className="flex justify-end gap-5">
+          {!stepper.isFirst && (
+            <Button
+              variant="outline"
+              onClick={stepper.prev}
+              disabled={stepper.isFirst}
+              className="text-base cursor-pointer rounded-[6px] h-12 px-10"
+            >
+              Back
+            </Button>
+          )}
           <Button
             onClick={stepper.isLast ? stepper.reset : stepper.next}
-            className="cursor-pointer"
+            className="text-base cursor-pointer rounded-[6px] h-12 px-10"
           >
             {stepper.isLast ? 'Finish' : 'Continue'}
           </Button>
