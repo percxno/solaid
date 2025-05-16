@@ -17,8 +17,13 @@ export async function POST(req: NextRequest) {
     } = body;
 
     if (
-      !title || !story || !goalAmount || !category ||
-      !email || !walletAddress || !campaignOwnerName
+      !title ||
+      !story ||
+      !goalAmount ||
+      !category ||
+      !email ||
+      !walletAddress ||
+      !campaignOwnerName
     ) {
       return NextResponse.json(
         { error: 'Missing required fields' },
@@ -49,19 +54,22 @@ export async function POST(req: NextRequest) {
   }
 }
 
-
 export async function GET(req: NextRequest) {
-    try {
-      const campaigns = await prisma.campaign.findMany({
-        orderBy: { createdAt: 'desc' },
-      });
-  
-      return NextResponse.json(campaigns, { status: 200 });
-    } catch (error) {
-      console.error('[CAMPAIGN_FETCH_ERROR]', error);
-      return NextResponse.json(
-        { error: 'Failed to fetch campaigns' },
-        { status: 500 }
-      );
-    }
+  try {
+    const { searchParams } = new URL(req.url);
+    const category = searchParams.get('category');
+
+    const campaigns = await prisma.campaign.findMany({
+      where: category ? { category } : undefined,
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return NextResponse.json(campaigns, { status: 200 });
+  } catch (error) {
+    console.error('[CAMPAIGN_FETCH_ERROR]', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch campaigns' },
+      { status: 500 }
+    );
   }
+}
