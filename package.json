@@ -10,11 +10,15 @@
     "prettier": "prettier --write ."
   },
   "dependencies": {
+    "@radix-ui/react-label": "^2.1.6",
+    "@radix-ui/react-separator": "^1.1.6",
+    "@radix-ui/react-slot": "^1.2.2",
     "@solana/wallet-adapter-base": "^0.9.26",
     "@solana/wallet-adapter-react": "^0.15.38",
     "@solana/wallet-adapter-react-ui": "^0.9.38",
     "@solana/wallet-adapter-wallets": "^0.19.36",
     "@solana/web3.js": "1",
+    "@stepperize/react": "^5.1.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide": "^0.510.0",

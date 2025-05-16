@@ -3,41 +3,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { FlickeringGrid } from '@/components/magicui/flickering-grid';
-import {
-  PawPrintIcon,
-  BriefcaseIcon,
-  UsersIcon,
-  PaintbrushIcon,
-  BookOpenIcon,
-  AlertTriangleIcon,
-  LeafIcon,
-  CalendarIcon,
-  StarIcon,
-  HomeIcon,
-  AmbulanceIcon,
-  FeatherIcon,
-  HandshakeIcon,
-  VolleyballIcon,
-  CakeSliceIcon,
-} from 'lucide-react';
-
-const categories = [
-  { name: 'Animal', icon: PawPrintIcon },
-  { name: 'Business', icon: BriefcaseIcon },
-  { name: 'Community', icon: UsersIcon },
-  { name: 'Creative', icon: PaintbrushIcon },
-  { name: 'Education', icon: BookOpenIcon },
-  { name: 'Emergency', icon: AlertTriangleIcon },
-  { name: 'Environment', icon: LeafIcon },
-  { name: 'Event', icon: CalendarIcon },
-  { name: 'Faith', icon: StarIcon },
-  { name: 'Family', icon: HomeIcon },
-  { name: 'Medical', icon: AmbulanceIcon },
-  { name: 'Memorial', icon: FeatherIcon },
-  { name: 'Nonprofit', icon: HandshakeIcon },
-  { name: 'Sports', icon: VolleyballIcon },
-  { name: 'Wishes', icon: CakeSliceIcon },
-];
+import { categories } from '@/lib/categories';
 
 export default function Campaigns() {
   return (
