@@ -28,16 +28,18 @@ import {
 const { useStepper } = defineStepper(
   {
     id: 'category',
-    title: 'Category',
-    description: 'Why are you fundraising?',
   },
   {
     id: 'beneficiary',
-    title: 'Beneficiary',
-    description: 'Who are you fundraising for?',
   },
-  { id: 'goal', title: 'Goal', description: 'Fundraising goal' },
-  { id: 'story', title: 'Story', description: 'Tell your story' }
+  { id: 'goal' },
+  { id: 'story' },
+  {
+    id: 'title',
+  },
+  {
+    id: 'media',
+  }
 );
 
 export default function Fundraise() {
@@ -63,6 +65,8 @@ export default function Fundraise() {
           beneficiary: () => <BeneficiaryStep />,
           goal: () => <GoalStep />,
           story: () => <StoryStep />,
+          media: () => <MediaStep />,
+          title: () => <TitleStep />,
         })}
 
         <div className="flex justify-between pt-8">
@@ -70,10 +74,14 @@ export default function Fundraise() {
             variant="outline"
             onClick={stepper.prev}
             disabled={stepper.isFirst}
+            className="cursor-pointer"
           >
             Back
           </Button>
-          <Button onClick={stepper.isLast ? stepper.reset : stepper.next}>
+          <Button
+            onClick={stepper.isLast ? stepper.reset : stepper.next}
+            className="cursor-pointer"
+          >
             {stepper.isLast ? 'Finish' : 'Continue'}
           </Button>
         </div>
@@ -92,6 +100,10 @@ function getStepTitle(id: string) {
       return 'Set a fundraising goal';
     case 'story':
       return 'Tell your story';
+    case 'title':
+      return 'Title';
+    case 'media':
+      return 'Add media';
     default:
       return '';
   }
@@ -107,6 +119,10 @@ function getStepSubtitle(id: string) {
       return 'Set a clear and reasonable goal amount for your fundraiser.';
     case 'story':
       return 'Write your campaign story to inspire others to donate.';
+    case 'title':
+      return 'Give your fundraiser a title';
+    case 'media':
+      return 'Cover media helps tell your story. If you find a better photo later, you can always change it';
     default:
       return '';
   }
@@ -190,7 +206,7 @@ function GoalStep() {
         type="number"
         value={goal}
         onChange={(e) => setGoal(e.target.value)}
-        placeholder="Enter your goal amount here in USD"
+        placeholder="Your Starting Goal"
       />
     </div>
   );
@@ -207,6 +223,77 @@ function StoryStep() {
         placeholder="Tell your story here..."
         className="min-h-[400px] text-base"
       />
+    </div>
+  );
+}
+
+function TitleStep() {
+  const [title, setTitle] = useState('');
+  return (
+    <div className="space-y-4">
+      <Input
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="e.g. Help fund school fees in India"
+      />
+    </div>
+  );
+}
+
+function MediaStep() {
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.files?.[0];
+    if (!selected) return;
+    setFile(selected);
+    setPreview(URL.createObjectURL(selected));
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="w-full border border-dashed rounded-lg p-6 bg-muted flex flex-col items-center justify-center text-center text-muted-foreground">
+        {preview ? (
+          <div className="w-full max-h-[300px] overflow-hidden rounded-md">
+            {file?.type.startsWith('video') ? (
+              <video
+                src={preview}
+                controls
+                className="w-full h-auto rounded-md"
+              />
+            ) : (
+              <img
+                src={preview}
+                alt="Preview"
+                className="w-full h-auto rounded-md object-cover"
+              />
+            )}
+          </div>
+        ) : (
+          <>
+            <p className="mb-2">Upload a cover photo</p>
+            <p className="text-xs">
+              Recommended: Bright, clear images to help people connect
+            </p>
+          </>
+        )}
+      </div>
+
+      <Input
+        type="file"
+        accept="image/*,video/*"
+        onChange={handleFileChange}
+        className="cursor-pointer bg-background"
+      />
+      {file && (
+        <p className="text-sm text-muted-foreground truncate">
+          Selected: {file.name}
+        </p>
+      )}
+      <p className="text-sm text-muted-foreground">
+        You can skip this step and add media later.
+      </p>
     </div>
   );
 }
