@@ -31,11 +31,20 @@ export const CreateCampaignTitleSchema = z.object({
     .max(100, 'Title can’t exceed 100 characters'),
 });
 
+export const CreateCampaignMediaSchema = z.object({
+  mediaUrl: z
+    .string()
+    .url('Uploaded media must be a valid URL')
+    .nullable()
+    .optional(),
+});
+
 export const CreateCampaignSchema = CreateCampaignCategorySchema.merge(
   CreateCampaignGoalSchema
 )
   .merge(CreateCampaignStorySchema)
   .merge(CreateCampaignTitleSchema)
+  .merge(CreateCampaignMediaSchema)
   .extend({});
 
 export type CreateCampaignInput = z.infer<typeof CreateCampaignSchema>;
@@ -48,4 +57,7 @@ export type CreateCampaignStoryInput = z.infer<
 >;
 export type CreateCampaignTitleInput = z.infer<
   typeof CreateCampaignTitleSchema
+>;
+export type CreateCampaignMediaInput = z.infer<
+  typeof CreateCampaignMediaSchema
 >;

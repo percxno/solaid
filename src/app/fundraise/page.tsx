@@ -20,6 +20,7 @@ import {
   CreateCampaignGoalSchema,
   CreateCampaignStorySchema,
   CreateCampaignTitleSchema,
+  CreateCampaignMediaSchema,
 } from '@/lib/schemas/createCampaign';
 
 const { useStepper } = defineStepper(
@@ -33,12 +34,13 @@ const { useStepper } = defineStepper(
 
 export default function Fundraise() {
   const stepper = useStepper();
-  const { category, goal, story, title } = useCreateCampaignStore(
+  const { category, goal, story, title, mediaUrl } = useCreateCampaignStore(
     useShallow((s) => ({
       category: s.category,
       goal: s.goalAmount,
       story: s.story,
       title: s.title,
+      mediaUrl: s.mediaUrl,
     }))
   );
 
@@ -60,6 +62,11 @@ export default function Fundraise() {
   const isTitleValid =
     stepper.current.id === 'title'
       ? CreateCampaignTitleSchema.safeParse({ title }).success
+      : true;
+
+  const isMediaValid =
+    stepper.current.id === 'media'
+      ? CreateCampaignMediaSchema.safeParse({ mediaUrl }).success
       : true;
 
   const handleContinue = () => {
@@ -89,6 +96,14 @@ export default function Fundraise() {
 
     if (stepper.current.id === 'title') {
       const res = CreateCampaignTitleSchema.safeParse({ title });
+      if (!res.success) {
+        alert(res.error.errors[0].message);
+        return;
+      }
+    }
+
+    if (stepper.current.id === 'media') {
+      const res = CreateCampaignMediaSchema.safeParse({ mediaUrl });
       if (!res.success) {
         alert(res.error.errors[0].message);
         return;
@@ -147,7 +162,9 @@ export default function Fundraise() {
                     ? !isStoryValid
                     : stepper.current.id === 'title'
                       ? !isTitleValid
-                      : false
+                      : stepper.current.id === 'media'
+                        ? !isMediaValid
+                        : false
             }
             className="text-base cursor-pointer rounded-[6px] h-12 px-10"
           >
