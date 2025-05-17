@@ -91,7 +91,7 @@ export default async function CampaignCategory({
                         {c.title}
                       </h2>
                       <p className="text-white/50 text-sm line-clamp-3 mt-10">
-                        ${c.goalAmount?.toLocaleString() || '0'}
+                        {c.goalAmount?.toLocaleString() || '0'} SOL needed
                       </p>
                     </div>
                     <Button
