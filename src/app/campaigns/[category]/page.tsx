@@ -22,9 +22,9 @@ export function generateStaticParams() {
 export default async function CampaignCategory({
   params,
 }: {
-  params: { category: string };
+  params: Promise<{ category: string }>;
 }) {
-  const { category } = params;
+  const { category } = await params;
   const slug = category.toLowerCase();
   const displayName = slug.charAt(0).toUpperCase() + slug.slice(1);
   const Icon = categoryIconMap[slug];

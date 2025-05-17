@@ -18,7 +18,7 @@ import { SessionProvider } from 'next-auth/react';
 
 const { useStepper } = defineStepper(
   { id: 'category' },
-  { id: 'beneficiary' },
+  // { id: 'beneficiary' },
   { id: 'goal' },
   { id: 'story' },
   { id: 'title' },
@@ -45,7 +45,7 @@ export default function Fundraise() {
         <section className="w-full mt-16">
           {stepper.switch({
             category: () => <CategoryStep />,
-            beneficiary: () => <BeneficiaryStep />,
+            // beneficiary: () => <BeneficiaryStep />,
             goal: () => <GoalStep />,
             story: () => <StoryStep />,
             media: () => <MediaStep />,

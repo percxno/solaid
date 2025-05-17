@@ -19,8 +19,13 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function DonatePage({ params }: { params: Params }) {
-  const campaign = mockCampaigns.find((c) => c.id.toString() === params.id);
+export default async function DonatePage({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
+  const { id } = await params;
+  const campaign = mockCampaigns.find((c) => c.id.toString() === id);
   if (!campaign) return notFound();
 
   const Icon = categoryIconMap[campaign.category];

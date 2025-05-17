@@ -1,3 +1,4 @@
+import type { ForwardRefExoticComponent, RefAttributes } from 'react';
 import {
   PawPrintIcon,
   BriefcaseIcon,
@@ -14,6 +15,7 @@ import {
   HandshakeIcon,
   VolleyballIcon,
   CakeSliceIcon,
+  LucideProps,
 } from 'lucide-react';
 
 export const categories = [
@@ -100,7 +102,12 @@ export const categorieHeroContent: Record<
   },
 };
 
-export const categoryIconMap: Record<string, React.ComponentType<any>> = {
+export const categoryIconMap: Record<
+  string,
+  ForwardRefExoticComponent<
+    Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
+  >
+> = {
   animal: PawPrintIcon,
   business: BriefcaseIcon,
   community: UsersIcon,
