@@ -24,10 +24,18 @@ export const CreateCampaignStorySchema = z.object({
     .max(5000, 'Story is too long'),
 });
 
+export const CreateCampaignTitleSchema = z.object({
+  title: z
+    .string()
+    .min(10, 'Title must be at least 10 characters')
+    .max(100, 'Title can’t exceed 100 characters'),
+});
+
 export const CreateCampaignSchema = CreateCampaignCategorySchema.merge(
   CreateCampaignGoalSchema
 )
   .merge(CreateCampaignStorySchema)
+  .merge(CreateCampaignTitleSchema)
   .extend({});
 
 export type CreateCampaignInput = z.infer<typeof CreateCampaignSchema>;
@@ -37,4 +45,7 @@ export type CreateCampaignCategoryInput = z.infer<
 export type CreateCampaignGoalInput = z.infer<typeof CreateCampaignGoalSchema>;
 export type CreateCampaignStoryInput = z.infer<
   typeof CreateCampaignStorySchema
+>;
+export type CreateCampaignTitleInput = z.infer<
+  typeof CreateCampaignTitleSchema
 >;

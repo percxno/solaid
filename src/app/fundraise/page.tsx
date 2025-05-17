@@ -19,6 +19,7 @@ import {
   CreateCampaignCategorySchema,
   CreateCampaignGoalSchema,
   CreateCampaignStorySchema,
+  CreateCampaignTitleSchema,
 } from '@/lib/schemas/createCampaign';
 
 const { useStepper } = defineStepper(
@@ -32,11 +33,12 @@ const { useStepper } = defineStepper(
 
 export default function Fundraise() {
   const stepper = useStepper();
-  const { category, goal, story } = useCreateCampaignStore(
+  const { category, goal, story, title } = useCreateCampaignStore(
     useShallow((s) => ({
       category: s.category,
       goal: s.goalAmount,
       story: s.story,
+      title: s.title,
     }))
   );
 
@@ -53,6 +55,11 @@ export default function Fundraise() {
   const isStoryValid =
     stepper.current.id === 'story'
       ? CreateCampaignStorySchema.safeParse({ story }).success
+      : true;
+
+  const isTitleValid =
+    stepper.current.id === 'title'
+      ? CreateCampaignTitleSchema.safeParse({ title }).success
       : true;
 
   const handleContinue = () => {
@@ -72,11 +79,18 @@ export default function Fundraise() {
       }
     }
 
-    // Story validation
     if (stepper.current.id === 'story') {
       const result = CreateCampaignStorySchema.safeParse({ story });
       if (!result.success) {
         alert(result.error.errors[0].message);
+        return;
+      }
+    }
+
+    if (stepper.current.id === 'title') {
+      const res = CreateCampaignTitleSchema.safeParse({ title });
+      if (!res.success) {
+        alert(res.error.errors[0].message);
         return;
       }
     }
@@ -131,7 +145,9 @@ export default function Fundraise() {
                   ? !isGoalValid
                   : stepper.current.id === 'story'
                     ? !isStoryValid
-                    : false
+                    : stepper.current.id === 'title'
+                      ? !isTitleValid
+                      : false
             }
             className="text-base cursor-pointer rounded-[6px] h-12 px-10"
           >
