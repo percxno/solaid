@@ -11,9 +11,18 @@ export const CreateCampaignCategorySchema = z.object({
   }),
 });
 
-export const CreateCampaignSchema = CreateCampaignCategorySchema.extend({});
+export const CreateCampaignGoalSchema = z.object({
+  goal: z.coerce
+    .number({ invalid_type_error: 'Goal must be a number' })
+    .positive({ message: 'Goal must be greater than zero' }),
+});
+
+export const CreateCampaignSchema = CreateCampaignCategorySchema.merge(
+  CreateCampaignGoalSchema
+).extend({});
 
 export type CreateCampaignCategoryInput = z.infer<
   typeof CreateCampaignCategorySchema
 >;
+export type CreateCampaignGoalInput = z.infer<typeof CreateCampaignGoalSchema>;
 export type CreateCampaignInput = z.infer<typeof CreateCampaignSchema>;
