@@ -17,12 +17,24 @@ export const CreateCampaignGoalSchema = z.object({
     .positive({ message: 'Goal must be greater than zero' }),
 });
 
+export const CreateCampaignStorySchema = z.object({
+  story: z
+    .string()
+    .min(20, 'Story must be at least 20 characters long')
+    .max(5000, 'Story is too long'),
+});
+
 export const CreateCampaignSchema = CreateCampaignCategorySchema.merge(
   CreateCampaignGoalSchema
-).extend({});
+)
+  .merge(CreateCampaignStorySchema)
+  .extend({});
 
+export type CreateCampaignInput = z.infer<typeof CreateCampaignSchema>;
 export type CreateCampaignCategoryInput = z.infer<
   typeof CreateCampaignCategorySchema
 >;
 export type CreateCampaignGoalInput = z.infer<typeof CreateCampaignGoalSchema>;
-export type CreateCampaignInput = z.infer<typeof CreateCampaignSchema>;
+export type CreateCampaignStoryInput = z.infer<
+  typeof CreateCampaignStorySchema
+>;

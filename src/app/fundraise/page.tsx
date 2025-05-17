@@ -13,10 +13,12 @@ import {
   TitleStep,
   VerifyStep,
 } from './_components/steps';
+
 import { useCreateCampaignStore } from '@/stores/useCreateCampaignStore';
 import {
   CreateCampaignCategorySchema,
   CreateCampaignGoalSchema,
+  CreateCampaignStorySchema,
 } from '@/lib/schemas/createCampaign';
 
 const { useStepper } = defineStepper(
@@ -30,10 +32,11 @@ const { useStepper } = defineStepper(
 
 export default function Fundraise() {
   const stepper = useStepper();
-  const { category, goal } = useCreateCampaignStore(
+  const { category, goal, story } = useCreateCampaignStore(
     useShallow((s) => ({
       category: s.category,
       goal: s.goalAmount,
+      story: s.story,
     }))
   );
 
@@ -45,6 +48,11 @@ export default function Fundraise() {
   const isGoalValid =
     stepper.current.id === 'goal'
       ? CreateCampaignGoalSchema.safeParse({ goal }).success
+      : true;
+
+  const isStoryValid =
+    stepper.current.id === 'story'
+      ? CreateCampaignStorySchema.safeParse({ story }).success
       : true;
 
   const handleContinue = () => {
@@ -64,6 +72,16 @@ export default function Fundraise() {
       }
     }
 
+    // Story validation
+    if (stepper.current.id === 'story') {
+      const result = CreateCampaignStorySchema.safeParse({ story });
+      if (!result.success) {
+        alert(result.error.errors[0].message);
+        return;
+      }
+    }
+
+    // Advance or reset
     if (stepper.isLast) {
       stepper.reset();
     } else {
@@ -88,8 +106,8 @@ export default function Fundraise() {
           category: () => <CategoryStep />,
           goal: () => <GoalStep />,
           story: () => <StoryStep />,
-          media: () => <MediaStep />,
           title: () => <TitleStep />,
+          media: () => <MediaStep />,
           verify: () => <VerifyStep />,
         })}
 
@@ -111,7 +129,9 @@ export default function Fundraise() {
                 ? !isCategoryValid
                 : stepper.current.id === 'goal'
                   ? !isGoalValid
-                  : false
+                  : stepper.current.id === 'story'
+                    ? !isStoryValid
+                    : false
             }
             className="text-base cursor-pointer rounded-[6px] h-12 px-10"
           >
