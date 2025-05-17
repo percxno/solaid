@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
     config.externals.push('pino-pretty');
     return config;
   },
+  images: {
+    domains: ['images.gofundme.com'],
+  },
+
 };
 
 export default nextConfig;

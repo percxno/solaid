@@ -2,22 +2,35 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { mockCampaigns } from '@/lib/mock';
 import { categoryIconMap } from '@/lib/categories';
-import DonateForm from './_components/DonateForm';
-import { DonationStats } from './_components/DonationStats';
+import DonateSection from './_components/DonateSection';
 
 interface Params {
   id: string;
 }
 
-export const revalidate = 60;
-
-export async function generateStaticParams() {
-  return mockCampaigns.map((c) => ({
-    id: c.id.toString(),
-  }));
+interface Campaign {
+  id: string;
+  title: string;
+  story: string;
+  goalAmount: number;
+  category: string;
+  mediaUrl: string;
+  campaignOwnerName: string;
+  walletAddress: string;
+  totalDonated: number;
+  donationCount: number;
+  remainingAmount: number;
+  recentDonations: Array<{
+    id: string;
+    amount: number;
+    donorName: string;
+    createdAt: string;
+    campaignId: string;
+  }>;
 }
+
+export const revalidate = 10;
 
 export default async function DonatePage({
   params,
@@ -25,7 +38,20 @@ export default async function DonatePage({
   params: Promise<Params>;
 }) {
   const { id } = await params;
-  const campaign = mockCampaigns.find((c) => c.id.toString() === id);
+
+  // Fetch campaign data from API
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/campaigns/${id}`,
+    { next: { revalidate: 10 } }
+  );
+
+  if (!res.ok) {
+    if (res.status === 404) return notFound();
+    throw new Error(`Failed to fetch campaign: ${res.statusText}`);
+  }
+
+  const campaign: Campaign = await res.json();
+
   if (!campaign) return notFound();
 
   const Icon = categoryIconMap[campaign.category];
@@ -50,32 +76,22 @@ export default async function DonatePage({
         </h4>
         <p className="text-sm text-white/50">
           Organized by{' '}
-          <span className="font-medium">{campaign.beneficiary}</span>
+          <span className="font-medium">{campaign.campaignOwnerName}</span>
         </p>
       </section>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 my-20">
         <div className="relative w-full h-96">
           <Image
-            src={campaign.imageUrl}
+            src={campaign.mediaUrl || '/placeholder.jpg'}
             alt={campaign.title}
             fill
             className="object-cover rounded-lg"
           />
         </div>
 
-        <div className="flex flex-col w-full">
-          <p className="text-sm text-white/50 mb-6">{campaign.story}</p>
-          <div className="mb-6 flex flex-col">
-            <span className="text-lg font-semibold">1,005 SOL raised</span>
-            <span className="text-xs text-white/50">
-              10% of the 10,000 SOL goal
-            </span>
-          </div>
-
-          <DonateForm campaignId={Number(campaign.id)} />
-          <DonationStats />
-        </div>
+        {/* Client component for handling donations and refreshing data */}
+        <DonateSection initialCampaign={campaign} />
       </div>
     </main>
   );
