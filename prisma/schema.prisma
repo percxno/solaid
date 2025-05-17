@@ -23,7 +23,7 @@ model Campaign {
   campaignOwnerName String
   email             String
   walletAddress     String
-  verified          Boolean  @default(false)
+  verified          Boolean  @default(true)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
@@ -33,9 +33,11 @@ model Campaign {
 model Donation {
   id            String   @id @default(cuid())
   amount        Decimal
+  donorName     String   @default("Anonymous")
   email         String?
   walletAddress String
   message       String?
+  transactionId String
   campaignId    String
   createdAt     DateTime @default(now())
 
