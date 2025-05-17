@@ -23,7 +23,7 @@ model Campaign {
   campaignOwnerName String
   email             String
   walletAddress     String
-  verified          Boolean  @default(false)
+  verified          Boolean  @default(true)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 

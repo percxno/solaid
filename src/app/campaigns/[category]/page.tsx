@@ -9,7 +9,6 @@ import {
 } from '@/lib/categories';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { mockCampaigns } from '@/lib/mock';
 
 export const revalidate = 60;
 
@@ -34,7 +33,12 @@ export default async function CampaignCategory({
     subheading: `Browse urgent fundraisers for ${displayName.toLowerCase()} causes.`,
   };
 
-  const campaigns = mockCampaigns.filter((c) => c.category === slug);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/campaigns?category=${slug}`,
+    { next: { revalidate: 10 } }
+  );
+
+  const campaigns = await res.json();
 
   return (
     <main className="main-container container items-center flex-col">
@@ -61,40 +65,47 @@ export default async function CampaignCategory({
           </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-3">
-            {campaigns.map((c) => (
-              <Link href={`/donate/${c.id}`} key={c.id}>
-                <div
-                  className={cn(
-                    'group relative bg-transparent rounded-lg shadow-md overflow-hidden border',
-                    'cursor-pointer hover:border-white transition-all duration-200 p-6'
-                  )}
-                >
-                  <Image
-                    src={c.imageUrl}
-                    alt={c.title}
-                    width={500}
-                    height={500}
-                    className="w-full h-48 object-cover rounded-[6px]"
-                  />
-                  <div className="mt-4 justify-between">
-                    <h2 className="text-lg font-semibold mb-2 h-14 line-clamp-2">
-                      {c.title}
-                    </h2>
-                    <p className="text-white/50 text-sm line-clamp-3 mt-10">
-                      ${c.amount.toLocaleString()}
-                    </p>
-                  </div>
-                  <Button
+            {campaigns.map(
+              (c: {
+                id: string;
+                title: string;
+                mediaUrl?: string;
+                goalAmount?: number;
+              }) => (
+                <Link href={`/donate/${c.id}`} key={c.id}>
+                  <div
                     className={cn(
-                      'bg-[#1A1A1A] text-white group-hover:bg-white group-hover:text-black transition-colors duration-200',
-                      'text-base mt-5 rounded-[6px] h-12 px-10 w-full cursor-pointer'
+                      'group relative bg-transparent rounded-lg shadow-md overflow-hidden border',
+                      'cursor-pointer hover:border-white transition-all duration-200 p-6'
                     )}
                   >
-                    Donate
-                  </Button>
-                </div>
-              </Link>
-            ))}
+                    <Image
+                      src={c.mediaUrl || '/placeholder.jpg'}
+                      alt={c.title}
+                      width={500}
+                      height={500}
+                      className="w-full h-48 object-cover rounded-[6px]"
+                    />
+                    <div className="mt-4 justify-between">
+                      <h2 className="text-lg font-semibold mb-2 h-14 line-clamp-2">
+                        {c.title}
+                      </h2>
+                      <p className="text-white/50 text-sm line-clamp-3 mt-10">
+                        ${c.goalAmount?.toLocaleString() || '0'}
+                      </p>
+                    </div>
+                    <Button
+                      className={cn(
+                        'bg-[#1A1A1A] text-white group-hover:bg-white group-hover:text-black transition-colors duration-200',
+                        'text-base mt-5 rounded-[6px] h-12 px-10 w-full cursor-pointer'
+                      )}
+                    >
+                      Donate
+                    </Button>
+                  </div>
+                </Link>
+              )
+            )}
           </div>
         )}
       </section>
