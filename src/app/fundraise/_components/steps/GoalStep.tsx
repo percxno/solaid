@@ -18,11 +18,11 @@ export function GoalStep() {
             onChange={(e) => setGoal(e.target.value)}
             placeholder="Enter amount"
           />
-          <span className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-sm peer-disabled:opacity-50">
+          {/* <span className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-sm peer-disabled:opacity-50">
             $
-          </span>
+          </span> */}
           <span className="text-muted-foreground pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm peer-disabled:opacity-50">
-            USD
+            SOL
           </span>
         </div>
       </div>
