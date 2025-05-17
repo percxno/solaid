@@ -48,7 +48,7 @@ export default async function DashboardPage() {
                       {c.title}
                     </h2>
                     <p className="text-white/50 text-sm line-clamp-3 mt-10">
-                      ${c.amount.toLocaleString()} needed
+                      ${c.amount.toLocaleString()} SOL needed
                     </p>
                   </div>
                   <Button

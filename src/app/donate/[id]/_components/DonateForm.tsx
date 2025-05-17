@@ -53,6 +53,8 @@ export default function DonateForm({
       const signature = await sendTransaction(transaction, connection);
       console.log(`Transaction signature: ${signature}`);
 
+      // TODO: Confirm if the transaction is successful
+
       return signature;
     } catch (error) {
       console.error('Transaction failed', error);
@@ -163,7 +165,6 @@ export default function DonateForm({
         </div>
       </form>
 
-      {/* Modal for entering name and message */}
       <DonationModal
         amount={amount}
         isOpen={isModalOpen}
