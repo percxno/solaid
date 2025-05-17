@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Manrope } from 'next/font/google';
 import './globals.css';
+import { cn } from '@/lib/utils';
 
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
+import { Toaster } from '@/components/ui/toaster';
 
 import { Providers } from './providers';
 
@@ -44,6 +46,7 @@ export default function RootLayout({
             <Footer />
           </section>
         </Providers>
+        <Toaster />
       </body>
     </html>
   );

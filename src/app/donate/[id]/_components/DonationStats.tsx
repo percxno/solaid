@@ -44,7 +44,7 @@ export function DonationStats({
                   {donation.donorName || 'Anonymous'}
                 </p>
                 <p className="text-sm text-white/70">
-                  ${donation.amount.toLocaleString()}{' '}
+                  {donation.amount.toLocaleString()}{' '} Sol
                 </p>
               </div>
             </li>

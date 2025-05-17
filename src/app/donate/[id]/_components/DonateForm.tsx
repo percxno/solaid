@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useId, useState } from 'react';
+import React, { useId, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@radix-ui/react-label';
 import { Input } from '@/components/ui/input';
@@ -12,7 +12,9 @@ import {
   SystemProgram,
   Transaction,
 } from '@solana/web3.js';
+import { Share2Icon, CheckIcon } from 'lucide-react';
 import DonationModal from './DonationModal';
+import { useToast } from '@/components/ui/use-toast';
 
 export default function DonateForm({
   campaignId,
@@ -24,13 +26,23 @@ export default function DonateForm({
   onDonationSuccess?: () => void;
 }) {
   const id = useId();
-
+  const { toast } = useToast();
   const { publicKey, sendTransaction } = useWallet();
   const { connection } = useConnection();
 
   const [amount, setAmount] = useState<number>(0);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [shareSupported, setShareSupported] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [currentUrl, setCurrentUrl] = useState('');
+
+  useEffect(() => {
+    // Check if Web Share API is supported
+    setShareSupported(!!navigator.share);
+    // Get current URL
+    setCurrentUrl(window.location.href);
+  }, []);
 
   // Separate Solana transaction and API call
   const sendSolanaTransaction = async (): Promise<string> => {
@@ -121,6 +133,41 @@ export default function DonateForm({
     }
   };
 
+  const handleShare = async () => {
+    try {
+      if (shareSupported) {
+        await navigator.share({
+          title: 'Help support this campaign',
+          text: `Please consider donating to this campaign on Solaid!`,
+          url: currentUrl,
+        });
+
+        toast({
+          title: 'Shared successfully!',
+          description: 'Thanks for spreading the word.',
+        });
+      } else {
+        await navigator.clipboard.writeText(currentUrl);
+        setCopied(true);
+        toast({
+          title: 'Link copied!',
+          description: 'Campaign link copied to clipboard.',
+        });
+
+        setTimeout(() => {
+          setCopied(false);
+        }, 2000);
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+      toast({
+        title: 'Sharing failed',
+        description: 'Unable to share this campaign.',
+        variant: 'destructive',
+      });
+    }
+  };
+
   return (
     <>
       <form onSubmit={handleDonateClick} className="flex flex-col gap-4">
@@ -142,10 +189,22 @@ export default function DonateForm({
         </div>
         <div className="flex justify-end gap-5">
           <Button
+            type="button"
             variant="outline"
-            className="flex-1 mt-5 text-base cursor-pointer rounded-[6px] h-12 px-10"
+            onClick={handleShare}
+            className="flex-1 mt-5 text-base cursor-pointer rounded-[6px] h-12 px-10 flex items-center justify-center gap-2"
           >
-            Share
+            {copied ? (
+              <>
+                <CheckIcon size={16} />
+                Copied!
+              </>
+            ) : (
+              <>
+                <Share2Icon size={16} />
+                Share
+              </>
+            )}
           </Button>
           <Button
             type="submit"
