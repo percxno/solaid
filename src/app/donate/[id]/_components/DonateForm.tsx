@@ -5,11 +5,49 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@radix-ui/react-label';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import {
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from '@solana/web3.js';
 
 export default function DonateForm({ campaignId }: { campaignId: number }) {
   const id = useId();
+
+  const { publicKey, sendTransaction } = useWallet();
+  const { connection } = useConnection();
+
   const [amount, setAmount] = useState<number>(0);
   const [loading, setLoading] = useState(false);
+
+  const sendSol = async () => {
+    if (!publicKey) {
+      console.error('Wallet not connected');
+      return;
+    }
+
+    try {
+      const recipientPubKey = new PublicKey(
+        '98yvyiE28RT5s3eaou3yLHjMZdEEebGG9gULYSicQY27'
+      );
+
+      const transaction = new Transaction();
+      const sendSolInstruction = SystemProgram.transfer({
+        fromPubkey: publicKey,
+        toPubkey: recipientPubKey,
+        lamports: amount * LAMPORTS_PER_SOL,
+      });
+
+      transaction.add(sendSolInstruction);
+
+      const signature = await sendTransaction(transaction, connection);
+      console.log(`Transaction signature: ${signature}`);
+    } catch (error) {
+      console.error('Transaction failed', error);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,6 +56,7 @@ export default function DonateForm({ campaignId }: { campaignId: number }) {
     try {
       // TODO: call your real donation API here
       console.log('Donating', amount, 'to campaign', campaignId);
+      await sendSol();
       // on success: show a thank-you message or redirect…
     } catch (err) {
       console.error(err);
