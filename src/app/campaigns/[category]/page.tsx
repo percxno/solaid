@@ -10,7 +10,9 @@ import {
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-export const revalidate = 60;
+
+export const dynamic = 'force-dynamic'
+
 
 export function generateStaticParams() {
   return categories.map(({ name }) => ({
@@ -34,8 +36,7 @@ export default async function CampaignCategory({
   };
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/campaigns?category=${slug}`,
-    { next: { revalidate: 10 } }
+    `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/campaigns?category=${slug}`
   );
 
   const campaigns = await res.json();
