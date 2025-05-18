@@ -1,8 +1,13 @@
-import { useState } from 'react';
+'use client';
 import { Textarea } from '@/components/ui/textarea';
+import { useCreateCampaignStore } from '@/stores/useCreateCampaignStore';
+import { useShallow } from 'zustand/shallow';
 
 export function StoryStep() {
-  const [story, setStory] = useState('');
+  const { story, setStory } = useCreateCampaignStore(
+    useShallow((s) => ({ story: s.story, setStory: s.setStory }))
+  );
+
   return (
     <div className="space-y-4">
       <Textarea

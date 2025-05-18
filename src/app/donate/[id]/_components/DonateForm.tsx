@@ -38,13 +38,10 @@ export default function DonateForm({
   const [currentUrl, setCurrentUrl] = useState('');
 
   useEffect(() => {
-    // Check if Web Share API is supported
     setShareSupported(!!navigator.share);
-    // Get current URL
     setCurrentUrl(window.location.href);
   }, []);
 
-  // Separate Solana transaction and API call
   const sendSolanaTransaction = async (): Promise<string> => {
     if (!publicKey) {
       throw new Error('Wallet not connected');
@@ -74,7 +71,6 @@ export default function DonateForm({
     }
   };
 
-  // Record donation in the database after successful transaction
   const recordDonation = async (
     transactionId: string,
     donorName: string,

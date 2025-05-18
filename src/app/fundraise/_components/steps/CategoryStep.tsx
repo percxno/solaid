@@ -1,24 +1,30 @@
-import { useState } from 'react';
 import { CheckIcon } from 'lucide-react';
+import { useShallow } from 'zustand/shallow';
 
+import { useCreateCampaignStore } from '@/stores/useCreateCampaignStore';
 import { AnimatedSubscribeButton } from '@/components/magicui/animated-subscribe-button';
 import { FlickeringGrid } from '@/components/magicui/flickering-grid';
 import { categories } from '@/lib/categories';
 
 export function CategoryStep() {
-  const [selected, setSelected] = useState('');
+  const { category, setCategory } = useCreateCampaignStore(
+    useShallow((state) => ({
+      category: state.category,
+      setCategory: state.setCategory,
+    }))
+  );
 
   return (
     <section className="flex flex-wrap gap-5">
       {categories.map(({ name, icon: Icon }) =>
-        selected === name ? (
+        category === name ? (
           <AnimatedSubscribeButton
             className={`bg-transparent p-0 h-12
           border cursor-pointer
            text-white/50 hover:text-primary transition-colors duration-200
           `}
             key={name}
-            onClick={() => setSelected(name)}
+            onClick={() => setCategory(name)}
           >
             <span
               className="relative bg-transparent
@@ -55,7 +61,7 @@ export function CategoryStep() {
            text-white/50 hover:text-primary transition-colors duration-200
           `}
             key={name}
-            onClick={() => setSelected(name)}
+            onClick={() => setCategory(name)}
           >
             <span
               className="relative bg-transparent
