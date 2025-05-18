@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,32 +8,30 @@ datasource db {
 }
 
 model Campaign {
-  id                String   @id @default(cuid())
+  id                String     @id @default(cuid())
   title             String
   story             String
   goalAmount        Decimal
   category          String
   mediaUrl          String?
-  campaignOwnerName String
   email             String
   walletAddress     String
-  verified          Boolean  @default(true)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
-  donations Donation[]
+  verified          Boolean    @default(true)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  campaignOwnerName String
+  donations         Donation[]
 }
 
 model Donation {
   id            String   @id @default(cuid())
   amount        Decimal
-  donorName     String   @default("Anonymous")
   email         String?
   walletAddress String
   message       String?
-  transactionId String
   campaignId    String
   createdAt     DateTime @default(now())
-
-  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  donorName     String   @default("Anonymous")
+  transactionId String
+  campaign      Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
 }

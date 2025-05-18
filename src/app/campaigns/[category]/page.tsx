@@ -33,12 +33,12 @@ export default async function CampaignCategory({
     subheading: `Browse urgent fundraisers for ${displayName.toLowerCase()} causes.`,
   };
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/campaigns?category=${slug}`,
-    { next: { revalidate: 10 } }
-  );
+  // const res = await fetch(
+  //   `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/campaigns?category=${slug}`,
+  //   { next: { revalidate: 10 } }
+  // );
 
-  const campaigns = await res.json();
+  const campaigns: any = [];
 
   return (
     <main className="main-container container items-center flex-col">
