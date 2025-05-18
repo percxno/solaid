@@ -41,6 +41,7 @@ export const CreateCampaignMediaSchema = z.object({
 
 export const CreateCampaignVerifySchema = z.object({
   email: z.string().email('Please sign in with a valid email'),
+  campaignOwnerName: z.string().min(1, 'Please enter your name'),
   walletAddress: z
     .string()
     .min(1, 'Please connect your wallet before continuing'),

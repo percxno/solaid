@@ -14,6 +14,8 @@ export interface ICreateCampaignStore {
   setMediaUrl: (mediaUrl: string) => void;
   email: string;
   setEmail: (email: string) => void;
+  campaignOwnerName: string;
+  setCampaignOwnerName: (campaignOwnerName: string) => void;
   walletAddress: string;
   setWalletAddress: (walletAddress: string) => void;
 }
@@ -34,6 +36,9 @@ export const useCreateCampaignStore = create<ICreateCampaignStore>()(
         setMediaUrl: (mediaUrl: string) => set({ mediaUrl }),
         email: '',
         setEmail: (email: string) => set({ email }),
+        campaignOwnerName: '',
+        setCampaignOwnerName: (campaignOwnerName: string) =>
+          set({ campaignOwnerName }),
         walletAddress: '',
         setWalletAddress: (walletAddress: string) => set({ walletAddress }),
       }),

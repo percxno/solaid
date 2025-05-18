@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { defineStepper } from '@stepperize/react';
 import { useShallow } from 'zustand/shallow';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { getStepTitle, getStepSubtitle } from './_utils';
@@ -23,7 +24,6 @@ import {
   CreateCampaignMediaSchema,
   CreateCampaignVerifySchema,
 } from '@/lib/schemas/createCampaign';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
 const { useStepper } = defineStepper(
@@ -37,21 +37,46 @@ const { useStepper } = defineStepper(
 
 export default function Fundraise() {
   const stepper = useStepper();
-  const searchParams = useSearchParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const { category, goal, story, title, mediaUrl, email, walletAddress } =
-    useCreateCampaignStore(
-      useShallow((s) => ({
-        category: s.category,
-        goal: s.goalAmount,
-        story: s.story,
-        title: s.title,
-        mediaUrl: s.mediaUrl,
-        email: s.email,
-        walletAddress: s.walletAddress,
-      }))
-    );
+  const {
+    category,
+    goalAmount,
+    story,
+    title,
+    mediaUrl,
+    email,
+    campaignOwnerName,
+    walletAddress,
+    setCategory,
+    setGoalAmount,
+    setStory,
+    setTitle,
+    setMediaUrl,
+    setEmail,
+    setCampaignOwnerName,
+    setWalletAddress,
+  } = useCreateCampaignStore(
+    useShallow((s) => ({
+      category: s.category,
+      goalAmount: s.goalAmount,
+      story: s.story,
+      title: s.title,
+      mediaUrl: s.mediaUrl,
+      email: s.email,
+      campaignOwnerName: s.campaignOwnerName,
+      walletAddress: s.walletAddress,
+      setCategory: s.setCategory,
+      setGoalAmount: s.setGoalAmount,
+      setStory: s.setStory,
+      setTitle: s.setTitle,
+      setMediaUrl: s.setMediaUrl,
+      setEmail: s.setEmail,
+      setCampaignOwnerName: s.setCampaignOwnerName,
+      setWalletAddress: s.setWalletAddress,
+    }))
+  );
 
   const isCategoryValid =
     stepper.current.id === 'category'
@@ -60,7 +85,7 @@ export default function Fundraise() {
 
   const isGoalValid =
     stepper.current.id === 'goal'
-      ? CreateCampaignGoalSchema.safeParse({ goal }).success
+      ? CreateCampaignGoalSchema.safeParse({ goal: goalAmount }).success
       : true;
 
   const isStoryValid =
@@ -80,10 +105,16 @@ export default function Fundraise() {
 
   const isVerifyValid =
     stepper.current.id === 'verify'
-      ? CreateCampaignVerifySchema.safeParse({ email, walletAddress }).success
+      ? CreateCampaignVerifySchema.safeParse({
+          email,
+          campaignOwnerName,
+          walletAddress,
+        }).success
       : true;
 
-  const handleContinue = () => {
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+  const handleContinue = async () => {
     if (stepper.current.id === 'category') {
       const res = CreateCampaignCategorySchema.safeParse({ category });
       if (!res.success) {
@@ -93,7 +124,7 @@ export default function Fundraise() {
     }
 
     if (stepper.current.id === 'goal') {
-      const res = CreateCampaignGoalSchema.safeParse({ goal });
+      const res = CreateCampaignGoalSchema.safeParse({ goal: goalAmount });
       if (!res.success) {
         alert(res.error.errors[0].message);
         return;
@@ -127,18 +158,57 @@ export default function Fundraise() {
     if (stepper.current.id === 'verify') {
       const res = CreateCampaignVerifySchema.safeParse({
         email,
+        campaignOwnerName,
         walletAddress,
       });
       if (!res.success) {
         alert(res.error.errors[0].message);
         return;
       }
+
+      setIsSubmitting(true);
+      try {
+        const payload = {
+          category,
+          goalAmount,
+          story,
+          title,
+          mediaUrl,
+          email,
+          campaignOwnerName,
+          walletAddress,
+        };
+        const response = await fetch('/api/campaigns', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(errorText || 'Failed to create campaign');
+        }
+
+        setCategory('');
+        setGoalAmount(0);
+        setStory('');
+        setTitle('');
+        setMediaUrl('');
+        setEmail('');
+        setCampaignOwnerName('');
+        setWalletAddress('');
+
+        stepper.reset();
+        router.push('/dashboard');
+        return;
+      } catch (err: any) {
+        console.error(err);
+        alert('Error: ' + err.message);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
 
-    // Advance or reset
-    if (stepper.isLast) {
-      stepper.reset();
-    } else {
+    if (!stepper.isLast) {
       stepper.next();
     }
   };
@@ -182,7 +252,7 @@ export default function Fundraise() {
             <Button
               variant="outline"
               onClick={stepper.prev}
-              disabled={stepper.isFirst}
+              disabled={stepper.isFirst || isSubmitting}
               className="text-base cursor-pointer rounded-[6px] h-12 px-10"
             >
               Back
@@ -191,7 +261,8 @@ export default function Fundraise() {
           <Button
             onClick={handleContinue}
             disabled={
-              stepper.current.id === 'category'
+              isSubmitting ||
+              (stepper.current.id === 'category'
                 ? !isCategoryValid
                 : stepper.current.id === 'goal'
                   ? !isGoalValid
@@ -203,11 +274,15 @@ export default function Fundraise() {
                         ? !isMediaValid
                         : stepper.current.id === 'verify'
                           ? !isVerifyValid
-                          : false
+                          : false)
             }
             className="text-base cursor-pointer rounded-[6px] h-12 px-10"
           >
-            {stepper.isLast ? 'Finish' : 'Continue'}
+            {isSubmitting
+              ? 'Submitting…'
+              : stepper.isLast
+                ? 'Finish'
+                : 'Continue'}
           </Button>
         </div>
       </section>

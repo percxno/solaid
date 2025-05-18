@@ -13,20 +13,26 @@ export function VerifyStep() {
   const { data: session } = useSession();
   const { publicKey, select, disconnect, wallets, connected } = useWallet();
 
-  const { email, walletAddress, setEmail, setWalletAddress } =
-    useCreateCampaignStore(
-      useShallow((s) => ({
-        email: s.email,
-        walletAddress: s.walletAddress,
-        setEmail: s.setEmail,
-        setWalletAddress: s.setWalletAddress,
-      }))
-    );
+  const {
+    email,
+    walletAddress,
+    setEmail,
+    setCampaignOwnerName,
+    setWalletAddress,
+  } = useCreateCampaignStore(
+    useShallow((s) => ({
+      email: s.email,
+      walletAddress: s.walletAddress,
+      setEmail: s.setEmail,
+      setCampaignOwnerName: s.setCampaignOwnerName,
+      setWalletAddress: s.setWalletAddress,
+    }))
+  );
 
-  // whenever session.user.email becomes available, write it into store
   useEffect(() => {
     if (session?.user?.email) {
       setEmail(session.user.email);
+      setCampaignOwnerName(session.user.name || 'Anonymous');
     }
   }, [session, setEmail]);
 
