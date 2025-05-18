@@ -4,7 +4,6 @@ import { prisma } from '@/utils/client';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-
     const {
       title,
       story,
@@ -56,11 +55,14 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
-    const category = searchParams.get('category');
+    const url = new URL(req.url);
+    const email = url.searchParams.get('email');
+    const category = url.searchParams.get('category');
+
+    const whereClause = email ? { email } : category ? { category } : undefined;
 
     const campaigns = await prisma.campaign.findMany({
-      where: category ? { category } : undefined,
+      where: whereClause,
       orderBy: { createdAt: 'desc' },
     });
 

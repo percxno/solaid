@@ -80,7 +80,7 @@ export default async function DonatePage({
         </p>
       </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 my-20">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 my-20 w-full">
         <div className="relative w-full h-96">
           <Image
             src={campaign.mediaUrl || '/placeholder.jpg'}
@@ -89,8 +89,6 @@ export default async function DonatePage({
             className="object-cover rounded-lg"
           />
         </div>
-
-        {/* Client component for handling donations and refreshing data */}
         <DonateSection initialCampaign={campaign} />
       </div>
     </main>
