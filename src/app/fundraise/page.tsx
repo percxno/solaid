@@ -23,6 +23,8 @@ import {
   CreateCampaignMediaSchema,
   CreateCampaignVerifySchema,
 } from '@/lib/schemas/createCampaign';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 const { useStepper } = defineStepper(
   { id: 'category' },
@@ -35,6 +37,9 @@ const { useStepper } = defineStepper(
 
 export default function Fundraise() {
   const stepper = useStepper();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   const { category, goal, story, title, mediaUrl, email, walletAddress } =
     useCreateCampaignStore(
       useShallow((s) => ({
@@ -137,6 +142,18 @@ export default function Fundraise() {
       stepper.next();
     }
   };
+
+  useEffect(() => {
+    const step = searchParams.get('step');
+    if (
+      step &&
+      ['category', 'goal', 'story', 'title', 'media', 'verify'].includes(step)
+    ) {
+      stepper.goTo(step as any);
+      router.replace('/fundraise', { scroll: false });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <main className="main-container container items-center flex-col">

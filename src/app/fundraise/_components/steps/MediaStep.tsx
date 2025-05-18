@@ -35,7 +35,7 @@ export function MediaStep() {
 
       const json = await res.json();
       const uploadResponse = json.uploadResponse;
-      console.log('Upload response:', uploadResponse);
+      // console.log('Upload response:', uploadResponse);
       // assume { url: string } returned
       setMediaUrl(uploadResponse.url);
       setPreview(uploadResponse.url);

@@ -57,7 +57,9 @@ export function VerifyStep() {
         <Button
           variant={email ? 'default' : 'outline'}
           className="w-full flex items-center justify-center gap-2 cursor-pointer"
-          onClick={() => signIn('google', { callbackUrl: '/fundraise' })}
+          onClick={() =>
+            signIn('google', { callbackUrl: '/fundraise?step=verify' })
+          }
         >
           <MailIcon size={16} />
           {email ? `Signed in as ${email}` : 'Connect with Google'}
