@@ -49,21 +49,38 @@ export default function DonateForm({
 
     try {
       const recipientPubKey = new PublicKey(walletAddress);
+      const transaction = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: publicKey,
+          toPubkey: recipientPubKey,
+          lamports: amount * LAMPORTS_PER_SOL,
+        })
+      );
 
-      const transaction = new Transaction();
-      const sendSolInstruction = SystemProgram.transfer({
-        fromPubkey: publicKey,
-        toPubkey: recipientPubKey,
-        lamports: amount * LAMPORTS_PER_SOL,
-      });
-
-      transaction.add(sendSolInstruction);
+      const { blockhash, lastValidBlockHeight } =
+        await connection.getLatestBlockhash('finalized');
 
       const signature = await sendTransaction(transaction, connection);
-      console.log(`Transaction signature: ${signature}`);
+      console.log(
+        `Submitted transaction ${signature}, awaiting confirmation...`
+      );
 
-      // TODO: Confirm if the transaction is successful
+      const confirmation = await connection.confirmTransaction(
+        {
+          signature,
+          blockhash,
+          lastValidBlockHeight,
+        },
+        'finalized'
+      );
 
+      if (confirmation.value.err) {
+        throw new Error(
+          `Transaction ${signature} failed: ${JSON.stringify(confirmation.value.err)}`
+        );
+      }
+
+      console.log(`Transaction ${signature} confirmed.`);
       return signature;
     } catch (error) {
       console.error('Transaction failed', error);
