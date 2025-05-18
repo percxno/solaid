@@ -9,8 +9,8 @@ import {
   CategoryStep,
   GoalStep,
   StoryStep,
-  MediaStep,
   TitleStep,
+  MediaStep,
   VerifyStep,
 } from './_components/steps';
 
@@ -21,6 +21,7 @@ import {
   CreateCampaignStorySchema,
   CreateCampaignTitleSchema,
   CreateCampaignMediaSchema,
+  CreateCampaignVerifySchema,
 } from '@/lib/schemas/createCampaign';
 
 const { useStepper } = defineStepper(
@@ -34,15 +35,18 @@ const { useStepper } = defineStepper(
 
 export default function Fundraise() {
   const stepper = useStepper();
-  const { category, goal, story, title, mediaUrl } = useCreateCampaignStore(
-    useShallow((s) => ({
-      category: s.category,
-      goal: s.goalAmount,
-      story: s.story,
-      title: s.title,
-      mediaUrl: s.mediaUrl,
-    }))
-  );
+  const { category, goal, story, title, mediaUrl, email, walletAddress } =
+    useCreateCampaignStore(
+      useShallow((s) => ({
+        category: s.category,
+        goal: s.goalAmount,
+        story: s.story,
+        title: s.title,
+        mediaUrl: s.mediaUrl,
+        email: s.email,
+        walletAddress: s.walletAddress,
+      }))
+    );
 
   const isCategoryValid =
     stepper.current.id === 'category'
@@ -69,27 +73,32 @@ export default function Fundraise() {
       ? CreateCampaignMediaSchema.safeParse({ mediaUrl }).success
       : true;
 
+  const isVerifyValid =
+    stepper.current.id === 'verify'
+      ? CreateCampaignVerifySchema.safeParse({ email, walletAddress }).success
+      : true;
+
   const handleContinue = () => {
     if (stepper.current.id === 'category') {
-      const result = CreateCampaignCategorySchema.safeParse({ category });
-      if (!result.success) {
-        alert(result.error.errors[0].message);
+      const res = CreateCampaignCategorySchema.safeParse({ category });
+      if (!res.success) {
+        alert(res.error.errors[0].message);
         return;
       }
     }
 
     if (stepper.current.id === 'goal') {
-      const result = CreateCampaignGoalSchema.safeParse({ goal });
-      if (!result.success) {
-        alert(result.error.errors[0].message);
+      const res = CreateCampaignGoalSchema.safeParse({ goal });
+      if (!res.success) {
+        alert(res.error.errors[0].message);
         return;
       }
     }
 
     if (stepper.current.id === 'story') {
-      const result = CreateCampaignStorySchema.safeParse({ story });
-      if (!result.success) {
-        alert(result.error.errors[0].message);
+      const res = CreateCampaignStorySchema.safeParse({ story });
+      if (!res.success) {
+        alert(res.error.errors[0].message);
         return;
       }
     }
@@ -104,6 +113,17 @@ export default function Fundraise() {
 
     if (stepper.current.id === 'media') {
       const res = CreateCampaignMediaSchema.safeParse({ mediaUrl });
+      if (!res.success) {
+        alert(res.error.errors[0].message);
+        return;
+      }
+    }
+
+    if (stepper.current.id === 'verify') {
+      const res = CreateCampaignVerifySchema.safeParse({
+        email,
+        walletAddress,
+      });
       if (!res.success) {
         alert(res.error.errors[0].message);
         return;
@@ -164,7 +184,9 @@ export default function Fundraise() {
                       ? !isTitleValid
                       : stepper.current.id === 'media'
                         ? !isMediaValid
-                        : false
+                        : stepper.current.id === 'verify'
+                          ? !isVerifyValid
+                          : false
             }
             className="text-base cursor-pointer rounded-[6px] h-12 px-10"
           >

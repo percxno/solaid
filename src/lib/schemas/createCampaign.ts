@@ -39,12 +39,20 @@ export const CreateCampaignMediaSchema = z.object({
     .optional(),
 });
 
+export const CreateCampaignVerifySchema = z.object({
+  email: z.string().email('Please sign in with a valid email'),
+  walletAddress: z
+    .string()
+    .min(1, 'Please connect your wallet before continuing'),
+});
+
 export const CreateCampaignSchema = CreateCampaignCategorySchema.merge(
   CreateCampaignGoalSchema
 )
   .merge(CreateCampaignStorySchema)
   .merge(CreateCampaignTitleSchema)
   .merge(CreateCampaignMediaSchema)
+  .merge(CreateCampaignVerifySchema)
   .extend({});
 
 export type CreateCampaignInput = z.infer<typeof CreateCampaignSchema>;
@@ -60,4 +68,8 @@ export type CreateCampaignTitleInput = z.infer<
 >;
 export type CreateCampaignMediaInput = z.infer<
   typeof CreateCampaignMediaSchema
+>;
+
+export type CreateCampaignVerifyInput = z.infer<
+  typeof CreateCampaignVerifySchema
 >;
