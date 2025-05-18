@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
     const uploadResponse = await imagekit.upload({
       file: buffer,
-      folder: '/solaid.fund',
+      folder: '/solaid-fund',
       fileName: fileName,
     });
 

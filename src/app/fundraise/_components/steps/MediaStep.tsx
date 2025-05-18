@@ -23,20 +23,22 @@ export function MediaStep() {
     // upload to your API route
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('fileName', file.name);
 
     try {
       setIsUploading(true);
-      const res = await fetch('/api/imagekit/upload', {
+      const res = await fetch('/api/imagekit', {
         method: 'POST',
         body: formData,
       });
       if (!res.ok) throw new Error(await res.text());
 
       const json = await res.json();
-      console.log('Upload response:', json);
+      const uploadResponse = json.uploadResponse;
+      console.log('Upload response:', uploadResponse);
       // assume { url: string } returned
-      setMediaUrl(json.url);
-      setPreview(json.url);
+      setMediaUrl(uploadResponse.url);
+      setPreview(uploadResponse.url);
     } catch (err) {
       console.error(err);
       alert('Upload failed. Please try again.');
@@ -90,15 +92,13 @@ export function MediaStep() {
         <p className="text-sm text-muted-foreground">Uploading…</p>
       )}
 
-      {mediaUrl && !isUploading && (
-        <p className="text-sm text-muted-foreground truncate">
-          Uploaded: {mediaUrl}
-        </p>
-      )}
+      {/* {mediaUrl && !isUploading && (
+        <p className="text-sm text-muted-foreground truncate">Uploaded</p>
+      )} */}
 
-      <p className="text-sm text-muted-foreground">
+      {/* <p className="text-sm text-muted-foreground">
         You can skip this step and add media later.
-      </p>
+      </p> */}
     </div>
   );
 }
