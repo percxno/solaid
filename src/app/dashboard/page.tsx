@@ -39,7 +39,6 @@ export default function DashboardPage() {
 
   return (
     <main className="main-container container items-center flex-col">
-      {/* Header: always shown */}
       <section className="flex flex-col mt-32 gap-10 justify-between bg-transparent w-full">
         <p className="font-light text-white/50 text-xs">/ DASHBOARD</p>
         <h1 className="text-7xl w-1/2 whitespace-nowrap">Your Fundraisers</h1>
@@ -48,7 +47,6 @@ export default function DashboardPage() {
         </h4>
       </section>
 
-      {/* Body: varies by auth & data state */}
       <section className="w-full my-40">
         {status === 'loading' && (
           <p className="text-center">Checking authentication…</p>
@@ -78,7 +76,7 @@ export default function DashboardPage() {
                 You haven’t created any campaigns yet.
               </p>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3">
                 {campaigns?.map((c) => (
                   <Link href={`/donate/${c.id}`} key={c.id}>
                     <div
