@@ -7,9 +7,21 @@ const nextConfig: NextConfig = {
     return config;
   },
   images: {
-    domains: ['images.gofundme.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ik.imagekit.io',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.gofundme.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
-
 };
 
 export default nextConfig;
