@@ -169,7 +169,7 @@ export default function Fundraise() {
       setIsSubmitting(true);
       try {
         const payload = {
-          category,
+          category: category.toLowerCase(),
           goalAmount,
           story,
           title,
