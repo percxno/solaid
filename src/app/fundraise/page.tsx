@@ -237,7 +237,7 @@ export default function Fundraise() {
         </h4>
       </section>
 
-      <section className="w-full mt-16">
+      <section className="w-full my-16">
         {stepper.switch({
           category: () => <CategoryStep />,
           goal: () => <GoalStep />,

@@ -1,10 +1,13 @@
 'use client';
-import { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { useCreateCampaignStore } from '@/stores/useCreateCampaignStore';
 import { useShallow } from 'zustand/shallow';
+import { Button } from '@/components/ui/button';
+import { TrashIcon } from 'lucide-react';
 
 export function MediaStep() {
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { mediaUrl, setMediaUrl } = useCreateCampaignStore(
     useShallow((s) => ({ mediaUrl: s.mediaUrl, setMediaUrl: s.setMediaUrl }))
   );
@@ -16,11 +19,9 @@ export function MediaStep() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // show a quick local preview
     const localUrl = URL.createObjectURL(file);
     setPreview(localUrl);
 
-    // upload to your API route
     const formData = new FormData();
     formData.append('file', file);
     formData.append('fileName', file.name);
@@ -32,28 +33,30 @@ export function MediaStep() {
         body: formData,
       });
       if (!res.ok) throw new Error(await res.text());
+      const { uploadResponse } = await res.json();
 
-      const json = await res.json();
-      const uploadResponse = json.uploadResponse;
-      // console.log('Upload response:', uploadResponse);
-      // assume { url: string } returned
       setMediaUrl(uploadResponse.url);
       setPreview(uploadResponse.url);
     } catch (err) {
       console.error(err);
       alert('Upload failed. Please try again.');
-      setMediaUrl('');
-      setPreview(null);
+      handleRemove();
     } finally {
       setIsUploading(false);
     }
   };
 
+  const handleRemove = () => {
+    setMediaUrl('');
+    setPreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
   return (
-    <div className="space-y-4">
-      <div className="w-full border border-dashed rounded-lg p-6 bg-muted flex flex-col items-center justify-center text-center text-muted-foreground">
+    <div className="flex flex-col items-start justify-center w-full gap-5">
+      <div className="w-1/2 border border-dashed rounded-lg p-6 flex flex-col items-center justify-center text-center text-muted-foreground">
         {preview ? (
-          <div className="w-full max-h-[300px] overflow-hidden rounded-md">
+          <div className="w-full max-h-[300px] overflow-hidden rounded-md relative">
             {preview.endsWith('.mp4') ||
             (preview.startsWith('blob:') && mediaUrl?.includes('video')) ? (
               <video
@@ -68,6 +71,17 @@ export function MediaStep() {
                 className="w-full h-auto rounded-md object-cover"
               />
             )}
+            <div className="absolute top-2 right-2 flex space-x-2">
+              <Button
+                size="sm"
+                variant="outline"
+                className="cursor-pointer rounded-[6px]"
+                onClick={handleRemove}
+                disabled={isUploading}
+              >
+                <TrashIcon className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
         ) : (
           <>
@@ -81,24 +95,17 @@ export function MediaStep() {
       </div>
 
       <Input
+        ref={fileInputRef}
         type="file"
         accept="image/*,video/*"
         onChange={handleFileChange}
         disabled={isUploading}
-        className="cursor-pointer bg-background"
+        className="w-1/2 cursor-pointer bg-background"
       />
 
       {isUploading && (
         <p className="text-sm text-muted-foreground">Uploading…</p>
       )}
-
-      {/* {mediaUrl && !isUploading && (
-        <p className="text-sm text-muted-foreground truncate">Uploaded</p>
-      )} */}
-
-      {/* <p className="text-sm text-muted-foreground">
-        You can skip this step and add media later.
-      </p> */}
     </div>
   );
 }
